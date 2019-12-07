@@ -74,6 +74,7 @@ export function Img(props: HTMLAttributes<any> & {
       constructor={constructor}
       didMount={(cmp) => didMount(cmp, props)}
       willUnmount={willUnmount}
+      shouldUpdate={shouldUpdate}
       render={(cmp) =>
         <div {...wrapperProps}
           data-wrapper
@@ -176,6 +177,12 @@ function didMount(cmp: any, props: { [key: string]: any }) {
   }
 }
 
+function shouldUpdate(cmp: any, nextState: { [key: string]: any }){
+  if (cmp.state.imageReady === nextState.imageReady){
+    return false;
+  }
+}
+
 function willUnmount(cmp: any) {
   cmp.observedElRef = null
 }
@@ -183,6 +190,8 @@ function willUnmount(cmp: any) {
 function getImageAspectRatio(img: HTMLImageElement) {
   return img.naturalHeight / img.naturalWidth
 }
+
+
 
 function getPreserverPaddingBottom(aspectRatio: number) {
   const ar = Number(aspectRatio)
